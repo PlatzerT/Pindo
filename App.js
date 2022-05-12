@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, Button, View } from 'react-native';
+import { StyleSheet, Button, View } from 'react-native';
 import * as Notification from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
 
 Notification.setNotificationHandler({
     handleNotification: async () => {
@@ -14,13 +13,12 @@ Notification.setNotificationHandler({
 });
 
 export default function App() {
-    //Exectute at the launch of app for ios
-    useEffect(() => {
 
-        Permissions.getAsync(Permissions.NOTIFICATIONS)
+    useEffect(() => {
+        Notification.getPermissionsAsync()
             .then((statusObj) => {
                 if (statusObj.status !== 'granted') {
-                    return Permissions.askAsync(Permissions.NOTIFICATIONS);
+                    return Notification.getPermissionsAsync();
                 }
                 return statusObj;
             }).then(statusObj => {
@@ -46,12 +44,7 @@ export default function App() {
             foregroundSubscription.remove();
         }
     }, []);
-    //=======================================================
 
-    //Trigger Function Called by click of the button to
-    //trigger notification
-
-    //=======================================================
     const triggerNotification = () => {
         Notification.scheduleNotificationAsync({
             content: {
