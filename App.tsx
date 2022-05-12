@@ -8,6 +8,7 @@ Notification.setNotificationHandler({
     return {
       shouldShowAlert: true,
       shouldPlaySound: true,
+      shouldSetBadge: false
     };
   },
 });
