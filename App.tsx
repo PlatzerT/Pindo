@@ -1,14 +1,15 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { StyleSheet, Button, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import * as Notification from "expo-notifications";
+import { createTodo } from "@services/todo-service";
 
 Notification.setNotificationHandler({
   handleNotification: async () => {
     return {
       shouldShowAlert: true,
       shouldPlaySound: true,
-      shouldSetBadge: false
+      shouldSetBadge: false,
     };
   },
 });
@@ -60,9 +61,14 @@ export default function App() {
       },
     });
   };
+
+  function onSave() {
+    createTodo(null);
+  }
   return (
     <View style={styles.container}>
       <Button title="Send Notification" onPress={triggerNotification} />
+      <Button title="Save" onPress={onSave} />
       <StatusBar style="auto" />
     </View>
   );
