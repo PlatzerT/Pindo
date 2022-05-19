@@ -12,7 +12,7 @@ export const colors = {
   pLow: "#10B981", // priority low
 };
 
-export const padding = {
+export const spacing = {
   sm: 10,
   md: 20,
   lg: 28,
