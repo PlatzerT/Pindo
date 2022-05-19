@@ -10,10 +10,7 @@
     "noEmit": true,
     "strict": false,
     "target": "esnext",
-    "baseUrl": ".",
-    "paths": {
-      "@services/*": ["src/services/*"]
-    }
+    "baseUrl": "."
   },
   "exclude": [
     "node_modules",
