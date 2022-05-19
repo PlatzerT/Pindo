@@ -1,21 +1,21 @@
-import { Todo } from "../models/Todo";
+import { ITodo } from "../models/ITodo";
 
-export function createTodo(todo: Todo): void {
+export function createTodo(todo: ITodo): void {
   console.log("first");
 }
 
-export function deleteTodo(id: number): Todo {
+export function deleteTodo(id: number): ITodo {
   return null;
 }
 
-export function findAll(): Todo[] {
+export function findAll(): ITodo[] {
   return null;
 }
 
-export function findById(id: number): Todo {
+export function findById(id: number): ITodo {
   return null;
 }
 
-export function updateTodo(todo: Todo): Todo {
+export function updateTodo(todo: ITodo): ITodo {
   return null;
 }
