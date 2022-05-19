@@ -11,9 +11,6 @@
     "strict": false,
     "target": "esnext",
     "baseUrl": ".",
-    "paths": {
-      "@services/*": ["src/services/*"]
-    }
   },
   "exclude": [
     "node_modules",
