@@ -13,13 +13,14 @@ interface IProps {
 
 export default function Todo({ todo }: IProps) {
   const { pointColor, ringColor } = priorityToColor(todo.priority);
+  const showContinuouslySymbol: string = "-";
   return (
     <TouchableHighlight disabled={todo.isDeleted} style={{borderRadius: 5}} activeOpacity={0.8} underlayColor={"#fafafa"} onPress={() => alert("Ok")}>
         <View style={styles.todo}>
             <PriorityPoint pointColor={todo.isDeleted ? colors.pDeleted : pointColor} ringColor={todo.isDeleted ? colors.pRingDeleted : ringColor} />
             <View style={styles.todoTextSection}>
                 <Text style={todo.isDeleted ? styles.deletedTodoText : styles.todoText}>{todo.text}</Text>
-                <Text style={styles.todoDeadline}>{formatDate(todo.deadline)}</Text>
+                <Text style={styles.todoDeadline}>{todo.deadline != null ? formatDate(todo.deadline) : showContinuouslySymbol}</Text>
             </View>
         </View>
     </TouchableHighlight>

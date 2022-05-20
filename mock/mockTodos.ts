@@ -13,7 +13,7 @@ export const activeTodos: ITodo[] = [
         id: 2,
         text: "Wash the dishes",
         priority: EPriority.LOW,
-        deadline: new Date("1995-12-17T03:24:00"),
+        deadline: null,
         isDeleted: false,
     },
     {

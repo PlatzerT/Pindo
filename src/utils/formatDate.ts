@@ -1,7 +1,10 @@
 export default function formatDate(date: Date) {
 
     let formattedDate: string;
-    if (isDateTomorrow(date)) {
+    if (date == null) {
+        formattedDate = "";
+    }
+    else if (isDateTomorrow(date)) {
         formattedDate = "tomorrow"
     } else {
         date = new Date(date);

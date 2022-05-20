@@ -9,23 +9,6 @@ import {getAllTodos, getTodoById, removeTodoById, storeTodo} from "../../service
 
 export default function HomeScreen() {
 
-    const [todos, setTodos] = useState();
-    function onSave() {
-        const todo: ITodo = {
-            id: 3,
-            text: "medium ok",
-            priority: EPriority.MEDIUM,
-            deadline: new Date(),
-            isDeleted: false
-        }
-        storeTodo(todo)
-            .then(r => console.log("Todo stored"));
-    }
-
-    function onGet() {
-        getAllTodos().then(todo => console.log(todo))
-    }
-
     return (
     <View style={styles.background}>
       <View style={styles.upperSection}>
@@ -41,8 +24,6 @@ export default function HomeScreen() {
         <CategorySection sectionTitle="Active" todos={activeTodos} />
         {/* History Todo Section */}
         <CategorySection sectionTitle="History" todos={deletedTodos} />
-          <Button title={"Save todo"} onPress={onSave} />
-          <Button title={"Get todos"} onPress={onGet} />
       </View>
     </View>
   );
