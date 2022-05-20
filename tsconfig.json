@@ -10,7 +10,7 @@
     "noEmit": true,
     "strict": false,
     "target": "esnext",
-    "baseUrl": ".",
+    "baseUrl": "."
   },
   "exclude": [
     "node_modules",
