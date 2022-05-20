@@ -1,11 +1,32 @@
-import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
-import React from "react";
+import {Button, Image, Text, View} from "react-native";
+import React, {useState} from "react";
 import styles from "./index.styles";
 import CategorySection from "../../components/category-section";
 import {activeTodos, deletedTodos} from "../../../mock/mockTodos";
+import {ITodo} from "../../models/ITodo";
+import {EPriority} from "../../models/EPriority";
+import {getAllTodos, getTodoById, removeTodoById, storeTodo} from "../../services/storage-service";
 
 export default function HomeScreen() {
-  return (
+
+    const [todos, setTodos] = useState();
+    function onSave() {
+        const todo: ITodo = {
+            id: 3,
+            text: "medium ok",
+            priority: EPriority.MEDIUM,
+            deadline: new Date(),
+            isDeleted: false
+        }
+        storeTodo(todo)
+            .then(r => console.log("Todo stored"));
+    }
+
+    function onGet() {
+        getAllTodos().then(todo => console.log(todo))
+    }
+
+    return (
     <View style={styles.background}>
       <View style={styles.upperSection}>
         <Text style={styles.heading}>Pindo</Text>
@@ -20,6 +41,8 @@ export default function HomeScreen() {
         <CategorySection sectionTitle="Active" todos={activeTodos} />
         {/* History Todo Section */}
         <CategorySection sectionTitle="History" todos={deletedTodos} />
+          <Button title={"Save todo"} onPress={onSave} />
+          <Button title={"Get todos"} onPress={onGet} />
       </View>
     </View>
   );
