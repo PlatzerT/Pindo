@@ -7,9 +7,14 @@ import styles from "./index.styles";
 interface IProps {
   sectionTitle: string;
   todos: ITodo[];
+  navigation: any;
 }
 
-export default function CategorySection({ sectionTitle, todos }: IProps) {
+export default function CategorySection({
+  sectionTitle,
+  todos,
+  navigation,
+}: IProps) {
   return (
     <View style={styles.categorySection}>
       <View style={styles.categoryBar}>
@@ -18,7 +23,7 @@ export default function CategorySection({ sectionTitle, todos }: IProps) {
       </View>
       <ScrollView>
         {todos.map((todo) => (
-          <Todo key={todo.id} todo={todo} />
+          <Todo key={todo.id + todo.text} todo={todo} navigation={navigation} />
         ))}
       </ScrollView>
     </View>

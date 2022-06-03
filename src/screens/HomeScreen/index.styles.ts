@@ -2,12 +2,6 @@ import { StyleSheet } from "react-native";
 import { fonts, spacing, colors } from "../../styles/base";
 
 const styles = StyleSheet.create({
-  background: {
-    backgroundColor: colors.primary,
-    flex: 1,
-    width: null,
-    height: null,
-  },
   upperSection: {
     position: "relative",
     width: null,
@@ -42,11 +36,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   pinImage: {
-    width: 260,
+    width: 256,
     height: 250,
     position: "absolute",
-    top: -30,
-    right: -70,
+    top: -20,
+    right: -30,
     zIndex: -1,
   },
 });
