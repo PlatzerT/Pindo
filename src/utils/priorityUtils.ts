@@ -1,19 +1,18 @@
-import { EPriority } from "../models/EPriority";
-import { colors } from "../styles/base";
+import {colors} from "../styles/base";
 
-export default function priorityToColor(priority: EPriority) {
+export function priorityToColor(priority: string) {
   let pointColor: string;
   let ringColor: string;
   switch (priority) {
-    case EPriority.HIGH:
+    case "high":
       pointColor = colors.pHigh;
       ringColor = colors.pRingHigh;
       break;
-    case EPriority.MEDIUM:
+    case "medium":
       pointColor = colors.pMedium;
       ringColor = colors.pRingMedium;
       break;
-    case EPriority.LOW:
+    case "low":
       pointColor = colors.pLow;
       ringColor = colors.pRingLow;
       break;

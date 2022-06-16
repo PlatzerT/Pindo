@@ -1,9 +1,7 @@
-import { EPriority } from "./EPriority";
-
 export interface ITodo {
-  id: number;
+  id: string,
   text: string;
-  priority: EPriority;
+  priority: string;
   deadline: Date;
   isDeleted: boolean;
 }

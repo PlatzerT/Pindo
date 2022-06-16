@@ -1,30 +1,38 @@
-import {Button, Image, Text, View} from "react-native";
-import React, {useState} from "react";
+import {Button, Image, Text, TouchableHighlight, TouchableOpacity, View} from "react-native";
+import React from "react";
 import styles from "./index.styles";
 import CategorySection from "../../components/category-section";
-import {activeTodos, deletedTodos} from "../../../mock/mockTodos";
-import {ITodo} from "../../models/ITodo";
-import {EPriority} from "../../models/EPriority";
-import {getAllTodos, getTodoById, removeTodoById, storeTodo} from "../../services/storage-service";
+import {sharedStyles} from "../../styles/base";
+import {useTodos} from "../../context/TodosProvider";
+import AddButton from "../../components/add-button";
 
-export default function HomeScreen() {
-
+export default function HomeScreen({navigation}) {
+    const { getDeletedTodos, getActiveTodos } = useTodos();
     return (
-    <View style={styles.background}>
-      <View style={styles.upperSection}>
-        <Text style={styles.heading}>Pindo</Text>
-        <Text style={styles.subtext}>Never forget anything{"\n"}again.</Text>
-        <Image
-          style={styles.pinImage}
-          source={require("../../../assets/images/pin.png")}
-        />
-      </View>
-      <View style={styles.contentSection}>
-        {/* Active Todo Section */}
-        <CategorySection sectionTitle="Active" todos={activeTodos} />
-        {/* History Todo Section */}
-        <CategorySection sectionTitle="History" todos={deletedTodos} />
-      </View>
-    </View>
-  );
+        <View style={sharedStyles.screenBackground}>
+            <View style={styles.upperSection}>
+                <Text style={styles.heading}>Pindo</Text>
+                <Text style={styles.subtext}>Never forget anything{"\n"}again.</Text>
+                <Image
+                    style={styles.pinImage}
+                    source={require("../../../assets/images/pin.png")}
+                />
+            </View>
+            <View style={styles.contentSection}>
+                {/* Active Todo Section */}
+                <CategorySection
+                    sectionTitle="Active"
+                    todos={getActiveTodos()}
+                    navigation={navigation}
+                />
+                {/* History Todo Section */}
+                <CategorySection
+                    sectionTitle="History"
+                    todos={getDeletedTodos()}
+                    navigation={navigation}
+                />
+            </View>
+            <AddButton navigation={navigation} />
+        </View>
+    );
 }
