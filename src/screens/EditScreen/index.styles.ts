@@ -26,6 +26,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginBottom: spacing.xl
     },
+    s2: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+        marginBottom: spacing.xl
+    },
     todoTextInput: {
         fontSize: fonts.xl,
         color: "#111827",
