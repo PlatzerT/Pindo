@@ -1,5 +1,5 @@
 export interface ITodo {
-  id: number,
+  id: string,
   text: string;
   priority: string;
   deadline: Date;

@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     top: -20,
     right: -30,
     zIndex: -1,
-  },
+  }
 });
 
 export default styles;

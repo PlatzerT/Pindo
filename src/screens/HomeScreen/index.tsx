@@ -1,9 +1,10 @@
-import {Image, Text, View} from "react-native";
+import {Button, Image, Text, TouchableHighlight, TouchableOpacity, View} from "react-native";
 import React from "react";
 import styles from "./index.styles";
 import CategorySection from "../../components/category-section";
 import {sharedStyles} from "../../styles/base";
 import {useTodos} from "../../context/TodosProvider";
+import AddButton from "../../components/add-button";
 
 export default function HomeScreen({navigation}) {
     const { getDeletedTodos, getActiveTodos } = useTodos();
@@ -31,6 +32,7 @@ export default function HomeScreen({navigation}) {
                     navigation={navigation}
                 />
             </View>
+            <AddButton navigation={navigation} />
         </View>
     );
 }

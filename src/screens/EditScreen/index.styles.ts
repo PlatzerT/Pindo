@@ -32,17 +32,6 @@ const styles = StyleSheet.create({
         fontWeight: "900",
         maxWidth: "90%"
     },
-    s2: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        marginBottom: spacing.xl
-    },
-    datePicker: {
-        flex: 1,
-        width: 80,
-    },
     label: {
         marginBottom: 2
     },

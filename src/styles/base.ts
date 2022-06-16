@@ -41,5 +41,6 @@ export const sharedStyles = {
     flex: 1,
     width: null,
     height: null,
+    position: "relative"
   },
 }

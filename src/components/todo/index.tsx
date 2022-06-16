@@ -1,12 +1,11 @@
 import React from "react";
-import { Text, TouchableHighlight, View } from "react-native";
-import { ITodo } from "../../models/ITodo";
+import {Text, TouchableHighlight, View} from "react-native";
+import {ITodo} from "../../models/ITodo";
 import PriorityPoint from "../priority-point";
 import styles from "./index.styles";
 import {formatDate} from "../../utils/dateUtils";
-import { colors } from "../../styles/base";
+import {colors} from "../../styles/base";
 import {priorityToColor} from "../../utils/priorityUtils";
-import {todoToJson} from "../../utils/todoUtils";
 
 interface IProps {
   todo: ITodo;

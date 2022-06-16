@@ -1,13 +1,25 @@
 import React, {useRef, useState} from "react";
-import {Keyboard, ScrollView, Switch, Text, TextInput, TouchableHighlight, TouchableOpacity, View} from "react-native";
+import {
+  Button,
+  Keyboard,
+  Platform,
+  ScrollView,
+  Switch,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  TouchableOpacity,
+  View
+} from "react-native";
 import {colors, sharedStyles} from "../../styles/base";
 import styles from "./index.styles";
 import Icon from 'react-native-vector-icons/Feather'
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import {ITodo} from "../../models/ITodo";
 import {useTodos} from "../../context/TodosProvider";
 import { LogBox } from 'react-native';
+import { formatDate } from "../../utils/dateUtils";
 
 interface IProps {
   navigation: any;
@@ -52,20 +64,24 @@ export default function EditScreen({ navigation, route }: IProps) {
     'Non-serializable values were found in the navigation state',
   ]);
 
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
   const [text, setText] = useState(todo.text);
   const [isTextFocused, setIsTextFocused] = useState(false);
   const refsFocus = useRef(null);
   const [showContinuously, setShowContinuously] = useState(todo.deadline == null);
-  const [deadlineDate, setDeadlineDate] = useState<Date>(todo.deadline != null ? todo.deadline : new Date());
-  const toggleSwitch = () => setShowContinuously(previousState => !previousState);
+  const toggleSwitch = () => {
+    setShowContinuously(previousState => !previousState);
+  }
   const [priority, setPriority] = useState(todo.priority);
-  console.log(priority)
 
   function save() {
     const t: ITodo = {
       id: todo.id,
       text: text,
-      deadline: !showContinuously ? deadlineDate : null,
+      deadline: !showContinuously ? date : null,
       priority: priority,
       isDeleted: todo.isDeleted
     }
@@ -74,42 +90,55 @@ export default function EditScreen({ navigation, route }: IProps) {
     })
   }
 
-  function onEditClick() {
-    if (!isTextFocused) {
-      // @ts-ignore
-      refsFocus.current.focus();
-    } else {
-      // @ts-ignore
-      refsFocus.current.blur();
-    }
-    setIsTextFocused(!isTextFocused)
+  function showMode(currentMode) {
+    setShow(true);
+    setMode(currentMode);
   }
 
+  function onChangeDate(e, selectedDate) {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  }
+
+  // style={{...styles.todoTextInput, backgroundColor: isTextFocused ? "#D7DDFF": "transparent"}}
+
+  // @ts-ignore
   return <View style={sharedStyles.screenBackground}>
     <View style={styles.contentSection}>
-      <View style={styles.s1}>
-        <TextInput style={{...styles.todoTextInput, backgroundColor: isTextFocused ? "#D7DDFF": "transparent"}}
-                   value={text}
-                   onChangeText={setText}
-                   ref={refsFocus}
-                   selectTextOnFocus={true}
-                   onSubmitEditing={() => setIsTextFocused(false)}
+      <Text style={styles.label}>Text</Text>
+      <TextInput
+          style={{
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            borderWidth: 1,
+            borderColor: "#d3d3d3",
+            borderRadius: 5,
+            marginBottom: 37,
+            fontSize: 24,
+            fontWeight: "bold",
+          }}
+          value={text}
+          onChangeText={setText}
+          ref={refsFocus}
+          selectTextOnFocus={true}
           placeholder={"Text here"}/>
-
-        <TouchableOpacity onPress={() => onEditClick()}>
-          <Icon name={"edit"} color="#9CA3AF" size={24}></Icon>
-        </TouchableOpacity>
-      </View>
       <View style={styles.s2}>
         <View>
           <Text style={styles.label}>Deadline</Text>
-          {!showContinuously ? <RNDateTimePicker
-              style={styles.datePicker}
-              mode={"date"}
-              display={"calendar"}
-              value={deadlineDate}
-              onChange={(e, date: Date) => setDeadlineDate(date)}/>
-          : <Text>-</Text>}
+          {showContinuously ? <Text>-</Text> : <TouchableOpacity activeOpacity={0.4} style={{
+            padding: 10,
+            backgroundColor: "#e5eaff",
+            borderRadius: 5
+          }} onPress={() => showMode('date')}><Text>{formatDate(date)}</Text></TouchableOpacity>}
+          {show && <DateTimePicker
+            testID={'dateTimePicker'}
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            display={"default"}
+            onChange={onChangeDate}
+          />}
         </View>
         <View>
           <Text style={styles.label}>Show continuously</Text>

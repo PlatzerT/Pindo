@@ -4,11 +4,11 @@ import {ITodo} from "../models/ITodo";
 
 export function storeTodo(todo: ITodo): Promise<void> {
     const jsonTodo = JSON.stringify(todo);
-    return AsyncStorage.setItem(String(todo.id), jsonTodo);
+    return AsyncStorage.setItem(todo.id, jsonTodo);
 }
 
-export function getTodoById(id: number): Promise<ITodo> {
-    return AsyncStorage.getItem(String(id))
+export function getTodoById(id: string): Promise<ITodo> {
+    return AsyncStorage.getItem(id)
         .then(jsonTodo => JSON.parse(jsonTodo));
 }
 
