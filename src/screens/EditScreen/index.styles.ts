@@ -45,6 +45,16 @@ const styles = StyleSheet.create({
     showContinuouslySwitch: {
         marginRight: 5
     },
+    textInput: {
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: "#d3d3d3",
+        borderRadius: 5,
+        marginBottom: 37,
+        fontSize: 24,
+        fontWeight: "bold",
+    },
     icon: {
         padding: 12,
         borderRadius: 10,
@@ -52,6 +62,11 @@ const styles = StyleSheet.create({
         marginBottom: spacing.md,
         color: colors.primary,
         overflow: "hidden"
+    },
+    calendarButton: {
+        padding: 10,
+        backgroundColor: "#e5eaff",
+        borderRadius: 5
     },
     center: {
         display: "flex",

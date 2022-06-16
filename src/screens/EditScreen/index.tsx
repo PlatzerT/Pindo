@@ -108,16 +108,7 @@ export default function EditScreen({ navigation, route }: IProps) {
     <View style={styles.contentSection}>
       <Text style={styles.label}>Text</Text>
       <TextInput
-          style={{
-            paddingVertical: 10,
-            paddingHorizontal: 10,
-            borderWidth: 1,
-            borderColor: "#d3d3d3",
-            borderRadius: 5,
-            marginBottom: 37,
-            fontSize: 24,
-            fontWeight: "bold",
-          }}
+          style={styles.textInput}
           value={text}
           onChangeText={setText}
           ref={refsFocus}
@@ -126,11 +117,7 @@ export default function EditScreen({ navigation, route }: IProps) {
       <View style={styles.s2}>
         <View>
           <Text style={styles.label}>Deadline</Text>
-          {showContinuously ? <Text>-</Text> : <TouchableOpacity activeOpacity={0.4} style={{
-            padding: 10,
-            backgroundColor: "#e5eaff",
-            borderRadius: 5
-          }} onPress={() => showMode('date')}><Text>{formatDate(date)}</Text></TouchableOpacity>}
+          {showContinuously ? <Text>-</Text> : <TouchableOpacity activeOpacity={0.4} style={styles.calendarButton} onPress={() => showMode('date')}><Text>{formatDate(date)}</Text></TouchableOpacity>}
           {show && <DateTimePicker
             testID={'dateTimePicker'}
             value={date}
