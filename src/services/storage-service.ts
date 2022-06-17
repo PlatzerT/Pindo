@@ -21,7 +21,6 @@ export async function getAllTodos(): Promise<ITodo[]> {
         const keys = await AsyncStorage.getAllKeys();
         const keysWithoutPushToken = keys.filter(key => key !== "expopushtoken")
         let jsonTodos = await AsyncStorage.multiGet(keysWithoutPushToken);
-        console.log(jsonTodos);
         return jsonTodos.map(jsonTodoPair => JSON.parse(jsonTodoPair[1]));
     } catch (e) {
         console.error(e);

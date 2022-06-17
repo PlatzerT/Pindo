@@ -28,13 +28,10 @@ export default function CategorySection({
         if (todoSwipeAction === "delete") {
             deleteTodo(todo);
             await Notifications.cancelScheduledNotificationAsync(todo.id);
-            console.log("todo " + todo.id + " deleted!");
         } else if (todoSwipeAction === "restore") {
             restoreTodo(todo);
             await scheduleTodoNotification(todo);
-            console.log("todo " + todo.id + " restored!");
         }
-
     }
 
     return (
