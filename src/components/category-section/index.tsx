@@ -4,6 +4,10 @@ import {ITodo} from "../../models/ITodo";
 import Todo from "../todo";
 import styles from "./index.styles";
 import {useTodos} from "../../context/TodosProvider";
+import * as Notifications from 'expo-notifications';
+import {formatDate} from "../../utils/dateUtils";
+import {priorityToColor} from "../../utils/priorityUtils";
+import {scheduleTodoNotification} from "../../services/notification-service";
 
 interface IProps {
     sectionTitle: string;
@@ -20,12 +24,14 @@ export default function CategorySection({
                                         }: IProps) {
     const {deleteTodo, restoreTodo} = useTodos();
 
-    function onSwipeOpen(todo: ITodo) {
+    async function onSwipeOpen(todo: ITodo) {
         if (todoSwipeAction === "delete") {
-            deleteTodo(todo)
+            deleteTodo(todo);
+            await Notifications.cancelScheduledNotificationAsync(todo.id);
             console.log("todo " + todo.id + " deleted!");
         } else if (todoSwipeAction === "restore") {
-            restoreTodo(todo)
+            restoreTodo(todo);
+            await scheduleTodoNotification(todo);
             console.log("todo " + todo.id + " restored!");
         }
 
