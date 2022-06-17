@@ -12,14 +12,15 @@ export function getTodoById(id: string): Promise<ITodo> {
         .then(jsonTodo => JSON.parse(jsonTodo));
 }
 
-export function removeTodoById(id: number): Promise<void> {
+export function removeTodoById(id: string): Promise<void> {
     return AsyncStorage.removeItem(String(id));
 }
 
 export async function getAllTodos(): Promise<ITodo[]> {
     try {
         const keys = await AsyncStorage.getAllKeys();
-        const jsonTodos = await AsyncStorage.multiGet(keys);
+        const keysWithoutPushToken = keys.filter(key => key !== "expopushtoken")
+        let jsonTodos = await AsyncStorage.multiGet(keysWithoutPushToken);
         console.log(jsonTodos);
         return jsonTodos.map(jsonTodoPair => JSON.parse(jsonTodoPair[1]));
     } catch (e) {

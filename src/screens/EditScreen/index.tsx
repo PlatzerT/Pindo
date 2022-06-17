@@ -1,16 +1,5 @@
-import React, {useRef, useState} from "react";
-import {
-  Button,
-  Keyboard,
-  Platform,
-  ScrollView,
-  Switch,
-  Text,
-  TextInput,
-  TouchableHighlight,
-  TouchableOpacity,
-  View
-} from "react-native";
+import React, {useEffect, useRef, useState} from "react";
+import {LogBox, Platform, Switch, Text, TextInput, TouchableHighlight, TouchableOpacity, View} from "react-native";
 import {colors, sharedStyles} from "../../styles/base";
 import styles from "./index.styles";
 import Icon from 'react-native-vector-icons/Feather'
@@ -18,8 +7,10 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import {ITodo} from "../../models/ITodo";
 import {useTodos} from "../../context/TodosProvider";
-import { LogBox } from 'react-native';
-import { formatDate } from "../../utils/dateUtils";
+import {formatDate} from "../../utils/dateUtils";
+import * as Notifications from 'expo-notifications';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 
 interface IProps {
   navigation: any;
@@ -57,7 +48,66 @@ function getButtonColorByIndex(i: number) {
   return btColor
 }
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  })
+});
+
 export default function EditScreen({ navigation, route }: IProps) {
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    const getPermission = async () => {
+      if (Constants.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+          alert('Enable push notifications to use the app!');
+          await AsyncStorage.setItem('expopushtoken', "");
+          return;
+        }
+        const token = (await Notifications.getExpoPushTokenAsync()).data;
+        await AsyncStorage.setItem('expopushtoken', token);
+      } else {
+        alert('Must use physical device for Push Notifications');
+      }
+
+      if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+          name: 'default',
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#FF231F7C',
+        });
+      }
+    }
+
+    getPermission();
+
+    // @ts-ignore
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      // @ts-ignore
+      setNotification(notification);
+    });
+
+    // @ts-ignore
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {});
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
   const { todo } = route.params;
   const { saveTodo } = useTodos();
   LogBox.ignoreLogs([
@@ -69,8 +119,6 @@ export default function EditScreen({ navigation, route }: IProps) {
   const [show, setShow] = useState(false);
 
   const [text, setText] = useState(todo.text);
-  const [isTextFocused, setIsTextFocused] = useState(false);
-  const refsFocus = useRef(null);
   const [showContinuously, setShowContinuously] = useState(todo.deadline == null);
   const toggleSwitch = () => {
     setShowContinuously(previousState => !previousState);
@@ -85,7 +133,17 @@ export default function EditScreen({ navigation, route }: IProps) {
       priority: priority,
       isDeleted: todo.isDeleted
     }
-    saveTodo(t).then(() => {
+
+    saveTodo(t).then(async () => {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: t.text,
+          body: formatDate(date)
+        },
+        trigger: {
+          seconds: 1
+        }
+      })
       navigation.navigate("Home");
     })
   }
@@ -101,8 +159,6 @@ export default function EditScreen({ navigation, route }: IProps) {
     setDate(currentDate);
   }
 
-  // style={{...styles.todoTextInput, backgroundColor: isTextFocused ? "#D7DDFF": "transparent"}}
-
   // @ts-ignore
   return <View style={sharedStyles.screenBackground}>
     <View style={styles.contentSection}>
@@ -111,7 +167,6 @@ export default function EditScreen({ navigation, route }: IProps) {
           style={styles.textInput}
           value={text}
           onChangeText={setText}
-          ref={refsFocus}
           selectTextOnFocus={true}
           placeholder={"Text here"}/>
       <View style={styles.s2}>
@@ -121,6 +176,7 @@ export default function EditScreen({ navigation, route }: IProps) {
           {show && <DateTimePicker
             testID={'dateTimePicker'}
             value={date}
+            // @ts-ignore
             mode={mode}
             is24Hour={true}
             display={"default"}

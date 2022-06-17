@@ -1,4 +1,4 @@
-import {Button, Image, Text, TouchableHighlight, TouchableOpacity, View} from "react-native";
+import {Image, Text, View} from "react-native";
 import React from "react";
 import styles from "./index.styles";
 import CategorySection from "../../components/category-section";
@@ -8,7 +8,9 @@ import AddButton from "../../components/add-button";
 
 export default function HomeScreen({navigation}) {
     const { getDeletedTodos, getActiveTodos } = useTodos();
+
     return (
+        // @ts-ignore
         <View style={sharedStyles.screenBackground}>
             <View style={styles.upperSection}>
                 <Text style={styles.heading}>Pindo</Text>
@@ -24,12 +26,14 @@ export default function HomeScreen({navigation}) {
                     sectionTitle="Active"
                     todos={getActiveTodos()}
                     navigation={navigation}
+                    todoSwipeAction={"delete"}
                 />
                 {/* History Todo Section */}
                 <CategorySection
                     sectionTitle="History"
                     todos={getDeletedTodos()}
                     navigation={navigation}
+                    todoSwipeAction={"restore"}
                 />
             </View>
             <AddButton navigation={navigation} />

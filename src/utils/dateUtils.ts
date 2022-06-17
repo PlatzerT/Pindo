@@ -1,5 +1,4 @@
 export function formatDate(date: Date) {
-    console.log(date)
     let formattedDate: string;
     if (date == null) {
         formattedDate = "";
@@ -29,7 +28,6 @@ function isDateTomorrow(date: Date): boolean {
     if (date == null) {
         return false;
     }
-    console.log(date)
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     return tomorrow === date;

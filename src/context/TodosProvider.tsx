@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import {getAllTodos, storeTodo} from "../services/storage-service";
+import {getAllTodos, removeTodoById, storeTodo} from "../services/storage-service";
 import {ITodo} from "../models/ITodo";
 import {jsonToTodo} from "../utils/todoUtils";
 
@@ -27,6 +27,20 @@ export default function TodosProvider({ children }) {
         })
     }
 
+    function deleteTodo(todo: ITodo) {
+        todo.isDeleted = true;
+        return storeTodo(todo).then(() => {
+            fetchTodos()
+        })
+    }
+
+    function restoreTodo(todo: ITodo) {
+        todo.isDeleted = false;
+        return storeTodo(todo).then(() => {
+            fetchTodos()
+        })
+    }
+
     function fetchTodos() {
         getAllTodos().then(fetchedTodos => {
             let parsedTodos = fetchedTodos.map(t => jsonToTodo(t))
@@ -42,7 +56,9 @@ export default function TodosProvider({ children }) {
         todos,
         getDeletedTodos,
         getActiveTodos,
-        saveTodo
+        saveTodo,
+        deleteTodo,
+        restoreTodo
     };
     return <TodosContext.Provider value={value}>{children}</TodosContext.Provider>;
 }
