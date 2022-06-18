@@ -200,6 +200,7 @@ export default function EditScreen({navigation, route}: IProps) {
                 </View>
             </View>
             <View>
+                <Text style={styles.priorityLabel}>Priority</Text>
                 <RadioForm
                     formHorizontal={true}
                     animation={true}

@@ -78,6 +78,9 @@ const styles = StyleSheet.create({
         letterSpacing: 1,
         fontSize: fonts.lg,
         color: "#fff"
+    },
+    priorityLabel: {
+        marginBottom: 10
     }
 });
 
