@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingHorizontal: spacing.xl,
+    paddingBottom: 50
   },
   heading: {
     fontSize: fonts["2xl"],

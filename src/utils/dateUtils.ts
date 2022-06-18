@@ -1,10 +1,7 @@
 export function formatDate(date: Date) {
     let formattedDate: string;
     if (date == null) {
-        formattedDate = "";
-    }
-    else if (isDateTomorrow(date)) {
-        formattedDate = "tomorrow"
+        formattedDate = "-";
     } else {
         date = new Date(date);
         let yyyy = date.getFullYear();
@@ -19,16 +16,6 @@ export function formatDate(date: Date) {
             ddStr = '0' + dd.toString();
         }
         formattedDate = ddStr + '.' + mmStr + '.' + yyyy;
-
     }
     return formattedDate;
-}
-
-function isDateTomorrow(date: Date): boolean {
-    if (date == null) {
-        return false;
-    }
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow === date;
 }

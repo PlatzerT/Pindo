@@ -17,7 +17,6 @@ interface IProps {
 
 export default function Todo({todo, navigation, onSwipeOpen}: IProps) {
     const {pointColor, ringColor} = priorityToColor(todo.priority);
-    const showContinuouslySymbol: string = "-";
 
     function onPress() {
         navigation.navigate("Edit", {todo: todo});
@@ -56,10 +55,8 @@ export default function Todo({todo, navigation, onSwipeOpen}: IProps) {
                             >
                                 {todo.text}
                             </Text>
-                            <Text style={styles.todoDeadline}>
-                                {todo.deadline != null
-                                    ? formatDate(todo.deadline)
-                                    : showContinuouslySymbol}
+                            <Text style={styles.todoDate}>
+                                {formatDate(todo.date)}
                             </Text>
                         </View>
                     </View>

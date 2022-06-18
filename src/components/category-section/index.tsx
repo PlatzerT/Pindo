@@ -1,13 +1,10 @@
 import React from "react";
-import {View, Text, ScrollView} from "react-native";
+import {FlatList, Text, TouchableOpacity, View} from "react-native";
 import {ITodo} from "../../models/ITodo";
 import Todo from "../todo";
 import styles from "./index.styles";
 import {useTodos} from "../../context/TodosProvider";
-import * as Notifications from 'expo-notifications';
-import {formatDate} from "../../utils/dateUtils";
-import {priorityToColor} from "../../utils/priorityUtils";
-import {scheduleTodoNotification} from "../../services/notification-service";
+import {cancelScheduledTodoNotification, scheduleTodoNotification} from "../../services/notification-service";
 
 interface IProps {
     sectionTitle: string;
@@ -22,30 +19,51 @@ export default function CategorySection({
                                             navigation,
                                             todoSwipeAction
                                         }: IProps) {
-    const {deleteTodo, restoreTodo} = useTodos();
+    const {deleteTodo, restoreTodo, clearTodos} = useTodos();
 
     async function onSwipeOpen(todo: ITodo) {
         if (todoSwipeAction === "delete") {
             deleteTodo(todo);
-            await Notifications.cancelScheduledNotificationAsync(todo.id);
+            await cancelScheduledTodoNotification(todo.id)
         } else if (todoSwipeAction === "restore") {
             restoreTodo(todo);
             await scheduleTodoNotification(todo);
         }
     }
 
+    function onPress() {
+        if (todos.length != 0) {
+            todos.map(async todo => {
+                await cancelScheduledTodoNotification(todo.id);
+            });
+            clearTodos()
+        }
+    }
+
+    function renderItem({item}) {
+        return (<Todo key={item.id + item.text} onSwipeOpen={() => onSwipeOpen(item)} todo={item}
+                      navigation={navigation}/>)
+    }
+
     return (
         <View style={styles.categorySection}>
             <View style={styles.categoryBar}>
                 <Text style={styles.categoryTitle}>{sectionTitle}</Text>
-                <Text style={styles.numberOfTodosInSection}>{todos.length}</Text>
+                <View style={styles.categoryRightSide}>
+                    {todoSwipeAction === "restore" &&
+                        <TouchableOpacity onPress={() => onPress()}>
+                            <Text style={styles.clearButton}>Clear</Text>
+                        </TouchableOpacity>
+                    }
+                    <Text style={styles.numberOfTodosInSection}>{todos.length}</Text>
+                </View>
             </View>
-            <ScrollView>
-                {todos.map((todo) => (
-                    <Todo key={todo.id + todo.text} onSwipeOpen={() => onSwipeOpen(todo)} todo={todo}
-                          navigation={navigation}/>
-                ))}
-            </ScrollView>
+            <FlatList
+                data={todos}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                persistentScrollbar={true}
+            />
         </View>
     );
 }

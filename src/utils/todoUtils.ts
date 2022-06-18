@@ -4,7 +4,7 @@ export function jsonToTodo(json: any): ITodo {
     return {
         id: json.id,
         text: json.text,
-        deadline: json.deadline != null ? new Date(json.deadline) : null,
+        date: json.date != null ? new Date(json.date) : null,
         priority: json.priority,
         isDeleted: json.isDeleted
     }

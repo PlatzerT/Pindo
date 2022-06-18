@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         fontSize: fonts.base,
         fontWeight: "bold"
     },
-    todoDeadline: {
+    todoDate: {
         color: "#9CA3AF",
     },
     deletedTodoText: {

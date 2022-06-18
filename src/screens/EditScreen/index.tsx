@@ -9,10 +9,9 @@ import {ITodo} from "../../models/ITodo";
 import {useTodos} from "../../context/TodosProvider";
 import {formatDate} from "../../utils/dateUtils";
 import * as Notifications from 'expo-notifications';
+import {AndroidImportance} from 'expo-notifications';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
-import {priorityToColor} from "../../utils/priorityUtils";
-import {AndroidNotificationPriority} from "expo-notifications";
 import {scheduleTodoNotification} from "../../services/notification-service";
 
 interface IProps {
@@ -85,11 +84,12 @@ export default function EditScreen({navigation, route}: IProps) {
             }
 
             if (Platform.OS === 'android') {
-                await Notifications.setNotificationChannelAsync('default', {
-                    name: 'default',
+                await Notifications.setNotificationChannelAsync('todos', {
+                    name: 'Todos',
                     importance: Notifications.AndroidImportance.MAX,
+                    showBadge: true,
                     vibrationPattern: [0, 250, 250, 250],
-                    lightColor: '#FF231F7C',
+                    lightColor: colors.primary,
                 });
             }
         }
@@ -121,27 +121,33 @@ export default function EditScreen({navigation, route}: IProps) {
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
-
+    const textRef = useRef();
     const [text, setText] = useState(todo.text);
-    const [showContinuously, setShowContinuously] = useState(todo.deadline == null);
+    const [continuous, setContinuous] = useState(todo.date == null);
     const toggleSwitch = () => {
-        setShowContinuously(previousState => !previousState);
+        setContinuous(previousState => !previousState);
     }
     const [priority, setPriority] = useState(todo.priority);
 
     function save() {
-        const t: ITodo = {
-            id: todo.id,
-            text: text,
-            deadline: !showContinuously ? date : null,
-            priority: priority,
-            isDeleted: todo.isDeleted,
-        }
 
-        saveTodo(t).then(async () => {
-            await scheduleTodoNotification(t);
-            navigation.navigate("Home");
-        })
+        if (text.length === 0 || text === "") {
+            // @ts-ignore
+            textRef.current.focus();
+        } else {
+            const t: ITodo = {
+                id: todo.id,
+                text: text,
+                date: !continuous ? date : null,
+                priority: priority,
+                isDeleted: todo.isDeleted,
+            }
+
+            saveTodo(t).then(async () => {
+                await scheduleTodoNotification(t);
+                navigation.navigate("Home");
+            })
+        }
     }
 
     function showMode(currentMode) {
@@ -162,13 +168,14 @@ export default function EditScreen({navigation, route}: IProps) {
             <TextInput
                 style={styles.textInput}
                 value={text}
+                ref={textRef}
                 onChangeText={setText}
                 selectTextOnFocus={true}
                 placeholder={"Text here"}/>
             <View style={styles.s2}>
                 <View>
                     <Text style={styles.label}>Deadline</Text>
-                    {showContinuously ? <Text>-</Text> :
+                    {continuous ? <Text>-</Text> :
                         <TouchableOpacity activeOpacity={0.4} style={styles.calendarButton}
                                           onPress={() => showMode('date')}><Text>{formatDate(date)}</Text></TouchableOpacity>}
                     {show && <DateTimePicker
@@ -182,14 +189,14 @@ export default function EditScreen({navigation, route}: IProps) {
                     />}
                 </View>
                 <View>
-                    <Text style={styles.label}>Show continuously</Text>
+                    <Text style={styles.label}>Continuous</Text>
                     <Switch
                         style={styles.showContinuouslySwitch}
                         trackColor={{false: '#767577', true: '#D2D6FF'}}
-                        thumbColor={showContinuously ? '#4b58f3' : '#f4f3f4'}
+                        thumbColor={continuous ? '#4b58f3' : '#f4f3f4'}
                         ios_backgroundColor="#fff"
                         onValueChange={toggleSwitch}
-                        value={showContinuously}/>
+                        value={continuous}/>
                 </View>
             </View>
             <View>

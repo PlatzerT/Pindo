@@ -3,6 +3,7 @@ import styles from "./index.styles";
 import {Text, TouchableOpacity} from "react-native";
 import {ITodo} from "../../models/ITodo";
 import uuid from 'react-native-uuid'
+import Icon from "react-native-vector-icons/Feather";
 
 export default function AddButton({ navigation }) {
 
@@ -13,7 +14,7 @@ export default function AddButton({ navigation }) {
             id: generatedId,
             text: "",
             isDeleted: false,
-            deadline: new Date(),
+            date: new Date(),
             priority: "low"
         }
         navigation.navigate("Edit", { todo: todo })
@@ -21,7 +22,7 @@ export default function AddButton({ navigation }) {
 
     return (
         <TouchableOpacity onPress={() => onPress()} style={styles.addButton}>
-            <Text style={styles.addButtonText}>+</Text>
+            <Icon style={styles.addButtonIcon} name={"plus"} size={24} />
         </TouchableOpacity>
     );
 }

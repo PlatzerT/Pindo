@@ -13,14 +13,21 @@ export async function scheduleTodoNotification(t: ITodo) {
         identifier: t.id,
         content: {
             title: t.text,
-            body: formatDate(t.deadline),
+            body: formatDate(t.date),
             color: pointColor,
             priority: notifPriority,
-            sticky: false,
+            sticky: true,
+            autoDismiss: false,
             vibrate: [250, 0, 250, 250]
         },
         trigger: {
-            seconds: 1
+            seconds: 1,
+            channelId: 'todos'
         }
     });
+}
+
+export async function cancelScheduledTodoNotification(id: string) {
+    await Notifications.dismissNotificationAsync(id);
+    await Notifications.cancelScheduledNotificationAsync(id);
 }

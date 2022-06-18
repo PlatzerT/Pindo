@@ -6,19 +6,17 @@ const styles = StyleSheet.create({
         padding: spacing.lg,
         backgroundColor: colors.primary,
         position: "absolute",
-        left: 10,
-        bottom: 10,
-        borderRadius: 15,
+        left: 20,
+        bottom: 20,
+        borderRadius: 25,
         shadowColor: "#2f62da",
         shadowOffset: {
             width: 0,
             height: -1
         }
     },
-    addButtonText: {
+    addButtonIcon: {
         color: "#FFF",
-        fontWeight: "bold",
-        fontSize: fonts.md,
     }
 });
 
