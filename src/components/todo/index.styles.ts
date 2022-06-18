@@ -1,5 +1,5 @@
 import {StyleSheet} from "react-native";
-import {fonts, spacing, colors} from "../../styles/base";
+import {fonts, spacing} from "../../styles/base";
 
 const styles = StyleSheet.create({
     todo: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     },
     todoText: {
         fontSize: fonts.base,
-        fontWeight: "bold"
+        fontWeight: "600"
     },
     todoDate: {
         color: "#9CA3AF",
@@ -32,8 +32,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#10B981",
         borderRadius: 5,
         height: 48,
-        elevation: 8,
-        shadowColor: "#6EE7B7",
     },
     restoreStyle: {
         display: "flex",
@@ -43,8 +41,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#F59E0B",
         borderRadius: 5,
         height: 48,
-        elevation: 8,
-        shadowColor: "#FCD34D"
     },
     iconStyle: {
         color: "#FFF",
