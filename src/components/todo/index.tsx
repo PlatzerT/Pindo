@@ -36,7 +36,8 @@ export default function Todo({todo, navigation, onSwipeOpen}: IProps) {
         <GestureHandlerRootView>
             <Swipeable
                 renderLeftActions={leftSwipe}
-                onSwipeableOpen={() => onSwipeOpen()}>
+                onSwipeableOpen={() => onSwipeOpen()}
+            >
                 <TouchableHighlight
                     disabled={todo.isDeleted}
                     style={{borderRadius: 5}}
