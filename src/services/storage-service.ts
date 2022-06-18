@@ -1,9 +1,10 @@
 // @ts-ignore
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ITodo} from "../models/ITodo";
+import {todoToJson} from "../utils/todoUtils";
 
 export function storeTodo(todo: ITodo): Promise<void> {
-    const jsonTodo = JSON.stringify(todo);
+    const jsonTodo = todoToJson(todo);
     return AsyncStorage.setItem(todo.id, jsonTodo);
 }
 
