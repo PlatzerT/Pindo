@@ -9,7 +9,6 @@ import {ITodo} from "../../models/ITodo";
 import {useTodos} from "../../context/TodosProvider";
 import {formatDate} from "../../utils/dateUtils";
 import * as Notifications from 'expo-notifications';
-import {AndroidImportance} from 'expo-notifications';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import {scheduleTodoNotification} from "../../services/notification-service";
@@ -118,7 +117,7 @@ export default function EditScreen({navigation, route}: IProps) {
         'Non-serializable values were found in the navigation state',
     ]);
 
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(todo.date ? todo.date : new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const textRef = useRef();
