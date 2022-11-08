@@ -35,12 +35,12 @@ export const fonts = {
   //primary: "Cochin",
 };
 
-export const sharedStyles = {
+export const sharedStyles: any = {
   screenBackground: {
     backgroundColor: colors.primary,
     flex: 1,
     width: null,
     height: null,
-    position: "relative"
+    position: "relative",
   },
-}
+};

@@ -1,30 +1,29 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
 import React, { useEffect, useRef, useState } from "react";
 import {
   LogBox,
   Platform,
-  Switch,
   Text,
   TextInput,
   TouchableHighlight,
   TouchableOpacity,
   View,
 } from "react-native";
-import { colors, sharedStyles } from "../../styles/base";
-import styles from "./index.styles";
-import Icon from "react-native-vector-icons/Feather";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
   RadioButtonLabel,
 } from "react-native-simple-radio-button";
-import { ITodo } from "../../models/ITodo";
+import Icon from "react-native-vector-icons/Feather";
 import { useTodos } from "../../context/TodosProvider";
-import { formatDate } from "../../utils/dateUtils";
-import * as Notifications from "expo-notifications";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Constants from "expo-constants";
+import { ITodo } from "../../models/ITodo";
 import { scheduleTodoNotification } from "../../services/notification-service";
+import { colors, sharedStyles } from "../../styles/base";
+import { formatDate } from "../../utils/dateUtils";
+import styles from "./index.styles";
 
 interface IProps {
   navigation: any;
@@ -137,7 +136,7 @@ export default function EditScreen({ navigation, route }: IProps) {
   const [date, setDate] = useState(todo.date ? todo.date : new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const textRef = useRef();
+  const textRef = useRef<TextInput>();
   const [text, setText] = useState(todo.text);
   const [continuous, setContinuous] = useState(todo.date == null);
   const toggleSwitch = () => {
@@ -147,7 +146,6 @@ export default function EditScreen({ navigation, route }: IProps) {
 
   function save() {
     if (text.length === 0 || text === "") {
-      // @ts-ignore
       textRef.current.focus();
     } else {
       const t: ITodo = {
@@ -176,7 +174,6 @@ export default function EditScreen({ navigation, route }: IProps) {
     setDate(currentDate);
   }
 
-  // @ts-ignore
   return (
     <View style={sharedStyles.screenBackground}>
       <View style={styles.contentSection}>
@@ -188,45 +185,33 @@ export default function EditScreen({ navigation, route }: IProps) {
           onChangeText={setText}
           selectTextOnFocus={true}
           multiline
+          blurOnSubmit={false}
           placeholder={"Text here"}
         />
         <View style={styles.s2}>
-          <View>
-            <Text style={styles.label}>Deadline</Text>
-            {continuous ? (
-              <Text>-</Text>
-            ) : (
-              <TouchableOpacity
-                activeOpacity={0.4}
-                style={styles.calendarButton}
-                onPress={() => showMode("date")}
-              >
-                <Text>{formatDate(date)}</Text>
-              </TouchableOpacity>
-            )}
-            {show && (
-              <DateTimePicker
-                testID={"dateTimePicker"}
-                value={date}
-                // @ts-ignore
-                mode={mode}
-                is24Hour={true}
-                display={"default"}
-                onChange={onChangeDate}
-              />
-            )}
-          </View>
-          <View>
-            <Text style={styles.label}>Continuous</Text>
-            <Switch
-              style={styles.showContinuouslySwitch}
-              trackColor={{ false: "#767577", true: "#D2D6FF" }}
-              thumbColor={continuous ? "#4b58f3" : "#f4f3f4"}
-              ios_backgroundColor="#fff"
-              onValueChange={toggleSwitch}
-              value={continuous}
+          <Text style={styles.label}>Deadline</Text>
+          {continuous ? (
+            <Text>-</Text>
+          ) : (
+            <TouchableOpacity
+              activeOpacity={0.4}
+              style={styles.calendarButton}
+              onPress={() => showMode("date")}
+            >
+              <Text>{formatDate(date)}</Text>
+            </TouchableOpacity>
+          )}
+          {show && (
+            <DateTimePicker
+              testID={"dateTimePicker"}
+              value={date}
+              // @ts-ignore
+              mode={mode}
+              is24Hour={true}
+              display={"default"}
+              onChange={onChangeDate}
             />
-          </View>
+          )}
         </View>
         <View>
           <Text style={styles.priorityLabel}>Priority</Text>

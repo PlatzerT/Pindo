@@ -1,71 +1,89 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import {getAllTodos, removeTodos, removeTodoById, storeTodo} from "../services/storage-service";
-import {ITodo} from "../models/ITodo";
-import {jsonToTodo} from "../utils/todoUtils";
+import React, {
+  createContext,
+  FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import {
+  getAllTodos,
+  removeTodos,
+  removeTodoById,
+  storeTodo,
+} from "../services/storage-service";
+import { ITodo } from "../models/ITodo";
+import { jsonToTodo } from "../utils/todoUtils";
 
 const TodosContext = createContext(null);
 const initialState = [];
 
 export function useTodos() {
-    return useContext(TodosContext);
+  return useContext(TodosContext);
 }
 
-export default function TodosProvider({ children }) {
-    const [todos, setTodos] = useState(initialState);
+interface Props {
+  children?: ReactNode;
+}
 
-    function getDeletedTodos() {
-        return todos.filter(todo => todo.isDeleted)
-    }
+export default function TodosProvider({ children }: Props) {
+  const [todos, setTodos] = useState(initialState);
 
-    function getActiveTodos() {
-        return todos.filter(todo => !todo.isDeleted)
-    }
+  function getDeletedTodos() {
+    return todos.filter((todo) => todo.isDeleted);
+  }
 
-    function saveTodo(todo: ITodo) {
-        return storeTodo(todo).then(() => {
-            fetchTodos()
-        })
-    }
+  function getActiveTodos() {
+    return todos.filter((todo) => !todo.isDeleted);
+  }
 
-    function deleteTodo(todo: ITodo) {
-        todo.isDeleted = true;
-        return storeTodo(todo).then(() => {
-            fetchTodos()
-        })
-    }
+  function saveTodo(todo: ITodo) {
+    return storeTodo(todo).then(() => {
+      fetchTodos();
+    });
+  }
 
-    function restoreTodo(todo: ITodo) {
-        todo.isDeleted = false;
-        return storeTodo(todo).then(() => {
-            fetchTodos()
-        })
-    }
+  function deleteTodo(todo: ITodo) {
+    todo.isDeleted = true;
+    return storeTodo(todo).then(() => {
+      fetchTodos();
+    });
+  }
 
-    function clearHistory() {
-        return removeTodos(getDeletedTodos()).then(() => {
-            fetchTodos()
-        })
-    }
+  function restoreTodo(todo: ITodo) {
+    todo.isDeleted = false;
+    return storeTodo(todo).then(() => {
+      fetchTodos();
+    });
+  }
 
-    function fetchTodos() {
-        getAllTodos().then(fetchedTodos => {
-            let parsedTodos = fetchedTodos.map(t => jsonToTodo(t))
-            setTodos(parsedTodos)
-        });
-    }
+  function clearHistory() {
+    return removeTodos(getDeletedTodos()).then(() => {
+      fetchTodos();
+    });
+  }
 
-    useEffect(() => {
-        fetchTodos()
-    }, []);
+  function fetchTodos() {
+    getAllTodos().then((fetchedTodos) => {
+      let parsedTodos = fetchedTodos.map((t) => jsonToTodo(t));
+      setTodos(parsedTodos);
+    });
+  }
 
-    const value = {
-        todos,
-        getDeletedTodos,
-        getActiveTodos,
-        saveTodo,
-        deleteTodo,
-        restoreTodo,
-        clearTodos: clearHistory
-    };
-    return <TodosContext.Provider value={value}>{children}</TodosContext.Provider>;
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  const value = {
+    todos,
+    getDeletedTodos,
+    getActiveTodos,
+    saveTodo,
+    deleteTodo,
+    restoreTodo,
+    clearTodos: clearHistory,
+  };
+  return (
+    <TodosContext.Provider value={value}>{children}</TodosContext.Provider>
+  );
 }

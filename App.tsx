@@ -14,17 +14,13 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <TapGestureHandler>
-      <RotationGestureHandler>
-        <TodosProvider>
-          <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Edit" component={EditScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </TodosProvider>
-      </RotationGestureHandler>
-    </TapGestureHandler>
+    <TodosProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Edit" component={EditScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </TodosProvider>
   );
 }
