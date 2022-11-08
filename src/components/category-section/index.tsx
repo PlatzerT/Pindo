@@ -68,7 +68,15 @@ export default function CategorySection({
         <Text style={styles.categoryTitle}>{sectionTitle}</Text>
         <View style={styles.categoryRightSide}>
           {todoSwipeAction === "restore" && (
-            <TouchableOpacity onPress={() => onPress()}>
+            <TouchableOpacity
+              onPress={() => onPress()}
+              style={{
+                borderRadius: 8,
+                backgroundColor: "#dbeafe",
+                padding: 6,
+                marginRight: 15,
+              }}
+            >
               <Text style={styles.clearButton}>Clear</Text>
             </TouchableOpacity>
           )}

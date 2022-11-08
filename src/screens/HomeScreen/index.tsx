@@ -10,7 +10,6 @@ export default function HomeScreen({ navigation }) {
   const { getDeletedTodos, getActiveTodos } = useTodos();
 
   return (
-    // @ts-ignore
     <View style={sharedStyles.screenBackground}>
       <View style={styles.upperSection}>
         <Text style={styles.heading}>Pindo</Text>

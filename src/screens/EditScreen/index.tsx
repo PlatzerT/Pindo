@@ -90,9 +90,6 @@ export default function EditScreen({ navigation, route }: IProps) {
   LogBox.ignoreLogs([
     "Non-serializable values were found in the navigation state",
   ]);
-
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
   const textRef = useRef<TextInput>();
   const [text, setText] = useState(todo.text);
   const [description, setDescription] = useState(todo.description || "");
@@ -113,11 +110,6 @@ export default function EditScreen({ navigation, route }: IProps) {
         navigation.navigate("Home");
       });
     }
-  }
-
-  function showMode(currentMode) {
-    setShow(true);
-    setMode(currentMode);
   }
 
   return (

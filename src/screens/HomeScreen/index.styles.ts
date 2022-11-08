@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
   upperSection: {
     position: "relative",
     width: null,
+    paddingTop: 60,
     padding: spacing.xl,
   },
   contentSection: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingHorizontal: spacing.xl,
-    paddingBottom: 50
+    paddingBottom: 50,
   },
   heading: {
     fontSize: fonts["2xl"],
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     top: -20,
     right: -30,
     zIndex: -1,
-  }
+  },
 });
 
 export default styles;

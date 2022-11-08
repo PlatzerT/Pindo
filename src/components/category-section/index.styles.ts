@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   categoryBar: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
     marginBottom: spacing.md,
   },
@@ -28,12 +29,11 @@ const styles = StyleSheet.create({
   clearButton: {
     fontWeight: "bold",
     color: colors.primary,
-    textDecorationLine: "underline",
-    marginRight: 15,
   },
   categoryRightSide: {
     display: "flex",
     flexDirection: "row",
+    alignItems: "center",
   },
 });
 
