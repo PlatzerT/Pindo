@@ -1,33 +1,28 @@
-import {ITodo} from "../models/ITodo";
-import {priorityToColor} from "../utils/priorityUtils";
+import { ITodo } from "../models/ITodo";
 import * as Notifications from "expo-notifications";
-import {formatDate} from "../utils/dateUtils";
+import { colors } from "../styles/base";
 
 export async function scheduleTodoNotification(t: ITodo) {
-    let notifPriority = t.priority;
-    if (notifPriority === "medium") {
-        notifPriority = "default";
-    }
-    const {pointColor} = priorityToColor(t.priority);
-    await Notifications.scheduleNotificationAsync({
-        identifier: t.id,
-        content: {
-            title: t.text,
-            body: formatDate(t.date),
-            color: pointColor,
-            priority: notifPriority,
-            sticky: true,
-            autoDismiss: false,
-            vibrate: [250, 0, 250, 250]
-        },
-        trigger: {
-            seconds: 1,
-            channelId: 'todos'
-        }
-    });
+  const request: Notifications.NotificationRequestInput = {
+    identifier: t.id,
+    content: {
+      title: t.text,
+      body: t.description,
+      color: colors.pointActive,
+      priority: "high",
+      sticky: true,
+      autoDismiss: false,
+      vibrate: [250, 0, 250, 250],
+    },
+    trigger: {
+      seconds: 1,
+      channelId: "todos",
+    },
+  };
+  await Notifications.scheduleNotificationAsync(request);
 }
 
 export async function cancelScheduledTodoNotification(id: string) {
-    await Notifications.dismissNotificationAsync(id);
-    await Notifications.cancelScheduledNotificationAsync(id);
+  await Notifications.dismissNotificationAsync(id);
+  await Notifications.cancelScheduledNotificationAsync(id);
 }

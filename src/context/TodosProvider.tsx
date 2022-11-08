@@ -1,18 +1,17 @@
 import React, {
   createContext,
-  FC,
   ReactNode,
   useContext,
   useEffect,
   useState,
 } from "react";
+import { ITodo } from "../models/ITodo";
 import {
   getAllTodos,
-  removeTodos,
   removeTodoById,
+  removeTodos,
   storeTodo,
 } from "../services/storage-service";
-import { ITodo } from "../models/ITodo";
 import { jsonToTodo } from "../utils/todoUtils";
 
 const TodosContext = createContext(null);
@@ -30,11 +29,11 @@ export default function TodosProvider({ children }: Props) {
   const [todos, setTodos] = useState(initialState);
 
   function getDeletedTodos() {
-    return todos.filter((todo) => todo.isDeleted);
+    return todos.filter((todo: ITodo) => todo.isChecked);
   }
 
   function getActiveTodos() {
-    return todos.filter((todo) => !todo.isDeleted);
+    return todos.filter((todo: ITodo) => !todo.isChecked);
   }
 
   function saveTodo(todo: ITodo) {
@@ -43,16 +42,22 @@ export default function TodosProvider({ children }: Props) {
     });
   }
 
-  function deleteTodo(todo: ITodo) {
-    todo.isDeleted = true;
+  function checkTodo(todo: ITodo) {
+    todo.isChecked = true;
     return storeTodo(todo).then(() => {
       fetchTodos();
     });
   }
 
   function restoreTodo(todo: ITodo) {
-    todo.isDeleted = false;
+    todo.isChecked = false;
     return storeTodo(todo).then(() => {
+      fetchTodos();
+    });
+  }
+
+  function removeTodo(todo: ITodo) {
+    return removeTodoById(todo.id).then(() => {
       fetchTodos();
     });
   }
@@ -79,8 +84,9 @@ export default function TodosProvider({ children }: Props) {
     getDeletedTodos,
     getActiveTodos,
     saveTodo,
-    deleteTodo,
+    checkTodo,
     restoreTodo,
+    removeTodo,
     clearTodos: clearHistory,
   };
   return (

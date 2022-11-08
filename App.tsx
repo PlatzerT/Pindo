@@ -1,18 +1,15 @@
-import "react-native-gesture-handler";
-import React, { useEffect } from "react";
-import HomeScreen from "./src/screens/HomeScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import EditScreen from "./src/screens/EditScreen";
+import React, { useEffect } from "react";
+import "react-native-gesture-handler";
 import TodosProvider from "./src/context/TodosProvider";
-import {
-  TapGestureHandler,
-  RotationGestureHandler,
-} from "react-native-gesture-handler";
+import EditScreen from "./src/screens/EditScreen";
+import HomeScreen from "./src/screens/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  useEffect(() => console.log("ok"), []);
   return (
     <TodosProvider>
       <NavigationContainer>

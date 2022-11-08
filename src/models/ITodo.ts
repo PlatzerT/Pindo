@@ -1,7 +1,6 @@
 export interface ITodo {
-  id: string,
+  id: string;
   text: string;
-  priority: string;
-  date: Date;
-  isDeleted: boolean;
+  description?: string;
+  isChecked: boolean;
 }

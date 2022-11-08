@@ -6,15 +6,11 @@ export const dimensions = {
 };
 
 export const colors = {
-  primary: "#3B5AF6",
-  pHigh: "#EF4444", // priority high
-  pRingHigh: "#FEE2E2",
-  pMedium: "#F59E0B", // priority medium
-  pRingMedium: "#FEF3C7",
-  pLow: "#10B981", // priority low
-  pRingLow: "#D1FAE5",
-  pDeleted: "#6B7280",
-  pRingDeleted: "#F3F4F6",
+  primary: "#2563eb",
+  pointActive: "#3b82f6",
+  ringActive: "#dbeafe",
+  pointDeleted: "#6B7280",
+  ringDeleted: "#F3F4F6",
 };
 
 export const spacing = {
@@ -32,7 +28,6 @@ export const fonts = {
   lg: 24,
   xl: 36,
   "2xl": 48,
-  //primary: "Cochin",
 };
 
 export const sharedStyles: any = {
