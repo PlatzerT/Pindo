@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Pindo",
-    "slug": "Pindo",
+    "name": "pindo",
+    "slug": "pindo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +14,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.chbb.pindo",
@@ -30,6 +32,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b5999795-637a-4be1-96ac-d7b5b508e7be"
+      }
     }
   }
 }

@@ -1,10 +1,6 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Constants from "expo-constants";
-import * as Notifications from "expo-notifications";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   LogBox,
-  Platform,
   Text,
   TextInput,
   TouchableHighlight,
@@ -22,69 +18,7 @@ interface IProps {
   route: any;
 }
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
-
 export default function EditScreen({ navigation, route }: IProps) {
-  const [notification, setNotification] = useState<any>(false);
-  const notificationListener = useRef<any>();
-  const responseListener = useRef<any>();
-
-  useEffect(() => {
-    const getPermission = async () => {
-      if (Constants.isDevice) {
-        const { status: existingStatus } =
-          await Notifications.getPermissionsAsync();
-        let finalStatus = existingStatus;
-        if (existingStatus !== "granted") {
-          const { status } = await Notifications.requestPermissionsAsync();
-          finalStatus = status;
-        }
-        if (finalStatus !== "granted") {
-          alert("Enable push notifications to use the app!");
-          await AsyncStorage.setItem("expopushtoken", "");
-          return;
-        }
-        const token = (await Notifications.getExpoPushTokenAsync()).data;
-        await AsyncStorage.setItem("expopushtoken", token);
-      } else {
-        alert("Must use physical device for Push Notifications");
-      }
-
-      if (Platform.OS === "android") {
-        await Notifications.setNotificationChannelAsync("todos", {
-          name: "Todos",
-          importance: Notifications.AndroidImportance.MAX,
-          showBadge: true,
-          vibrationPattern: [0, 250, 250, 250],
-          lightColor: colors.primary,
-        });
-      }
-    };
-
-    getPermission();
-
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        setNotification(notification);
-      });
-
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {});
-
-    return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current
-      );
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
-
   const { todo } = route.params;
   const { saveTodo } = useTodos();
   LogBox.ignoreLogs([
